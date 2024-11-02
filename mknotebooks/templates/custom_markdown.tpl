@@ -63,6 +63,15 @@
 {% block output_prompt %}{% endblock output_prompt %}
 
 {% block input %}
+{%- if 'toggle-input' in nb.metadata.tags  -%}
+<details class="note code-block"
+{%- if 'hide-input' not in cell.metadata.tags  -%}
+    open="open"
+{%- endif %}
+>
+    <summary>
+        Show/hide code
+    </summary>
 ```
 {%- if 'magics_language' in cell.metadata  -%}
     {{ cell.metadata.magics_language}}
@@ -71,6 +80,17 @@
 {%- endif %}
 {{ cell.source}}
 ```
+</details>
+{%- else %}
+```
+{%- if 'magics_language' in cell.metadata  -%}
+    {{ cell.metadata.magics_language}}
+{%- elif 'name' in nb.metadata.get('language_info', {}) -%}
+    {{ nb.metadata.language_info.name }}
+{%- endif %}
+{{ cell.source}}
+```
+{%- endif %}
 {% endblock input %}
 
 
